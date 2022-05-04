@@ -1,6 +1,6 @@
 
 spring:
     elasticsearch:
-        uris: localhost:9200
+        uris: dpms.openobject.net:4400
         username: elastic
         password: elastic

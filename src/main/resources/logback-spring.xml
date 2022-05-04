@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 	<property name="LOG_FILE_PATH" value="/data/logs/sample-spring-elastic/" />
-	<property name="LOG_FILE_NAME" value="app" />
 	<property name="CHAR_SET" value="UTF-8" />
 
-	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+	<!-- <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<charset>${CHAR_SET}</charset>
 			<Pattern>%-5level [%d{yyyy-MM-dd HH:mm:ss.SSS}] %c{1} %M\(\):%L - %m%n</Pattern>
@@ -24,7 +23,35 @@
 				<maxFileSize>10MB</maxFileSize>
 			</timeBasedFileNamingAndTriggeringPolicy>
 		</rollingPolicy>
-	</appender>
+	</appender> -->
+    <!-- was로그 로그 설정(기본 rolling 포맷) -->
+    <appender name="FILE_LOG_WAS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/logWas.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>utf-8</charset>
+            <Pattern>%d %-5level [%thread] [%X{url}] %logger{0}: %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <!-- was로그 로그 설정(json포맷)-->
+    <appender name="FILE_LOG_WAS_JSON" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE_PATH}/logWasJson.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"system_name":"SAMPLE_ELASTIC"}</customFields>            
+        </encoder> 
+    </appender>
+
+    <!-- root 로그 설정 -->
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>512</queueSize>
+        <appender-ref ref="FILE_LOG_WAS"/>
+    </appender>
 
 	<!-- local -->
 	<springProfile name="local">

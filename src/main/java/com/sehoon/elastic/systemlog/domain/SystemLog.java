@@ -8,7 +8,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 /**
  * WAS 로그 document(엘라스틱 서치)
  */
-@Document(indexName = "log_osp_was*", createIndex = false)
+@Document(indexName = "log_was*", createIndex = false)
 public class SystemLog {
 
     @Id
@@ -18,7 +18,7 @@ public class SystemLog {
     @Field(type = FieldType.Date, name = "@timestamp")
     private String logDate;
 
-    @Field(type = FieldType.Text, name = "body_message")
+    @Field(type = FieldType.Text, name = "message")
     private String bodyMessage;
 
     @Field(type = FieldType.Text, name = "url")
@@ -26,6 +26,12 @@ public class SystemLog {
 
     @Field(type = FieldType.Text, name = "level")
     private String level;
+
+    @Field(type = FieldType.Keyword, name = "system_name")
+    private String systemName;
+
+    @Field(type = FieldType.Text, name = "request_ip")
+    private String requestIp;
 
     public String getId() {
         return this.id;
@@ -65,5 +71,21 @@ public class SystemLog {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public String getSystemName() {
+        return this.systemName;
+    }
+
+    public void setSystemName(String systemName) {
+        this.systemName = systemName;
+    }
+
+    public String getRequestIp() {
+        return this.requestIp;
+    }
+
+    public void setRequestIp(String requestIp) {
+        this.requestIp = requestIp;
     }
 }
