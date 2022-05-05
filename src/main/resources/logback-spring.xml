@@ -24,6 +24,12 @@
 			</timeBasedFileNamingAndTriggeringPolicy>
 		</rollingPolicy>
 	</appender> -->
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<charset>${CHAR_SET}</charset>
+			<Pattern>%-5level [%d{yyyy-MM-dd HH:mm:ss.SSS}] %c{1} %M\(\):%L - %m%n</Pattern>
+		</encoder>
+	</appender>
     <!-- was로그 로그 설정(기본 rolling 포맷) -->
     <appender name="FILE_LOG_WAS" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -66,10 +72,12 @@
 	<!-- dev -->
 	<springProfile name="dev">
 		<logger name="com.sehoon.elastic" level="debug" additivity="false">
-			<appender-ref ref="console" />
+			<!-- <appender-ref ref="console" /> -->
+			<appender-ref ref="FILE_LOG_WAS"/>
 		</logger>
 		<root level="debug">
-			<appender-ref ref="console" />
+			<appender-ref ref="ASYNC"/>
+        	<appender-ref ref="FILE_LOG_WAS_JSON"/>
 		</root>
 	</springProfile>
 
@@ -84,4 +92,14 @@
 			<appender-ref ref="file" />
 		</root>
 	</springProfile>
+
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.web" level="WARN"/>
+    <logger name="org.springframework.security" level="WARN"/>
+    <logger name="org.springframework.cache" level="WARN"/>
+	<logger name="org.hibernate.validator" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.hibernate.ejb.HibernatePersistence" level="OFF"/>
+	<logger name="org.elasticsearch" level="WARN"/>
+	<logger name="_org.springframework.web.servlet.HandlerMapping.Mappings" level="INFO"/>
 </configuration>
